@@ -27,4 +27,10 @@ interface BookmarkDao {
 
     @Query("SELECT * FROM bookmarks WHERE pageNumber = :pageNumber ORDER BY last_updated DESC")
     suspend fun getBookmarksForPage(pageNumber: Int): List<Bookmark>
+
+    @Query("SELECT * FROM bookmarks ORDER BY last_updated DESC")
+    fun observeAllBookmarks(): Flow<List<Bookmark>>
+
+    @Query("SELECT * FROM bookmarks ORDER BY last_updated DESC LIMIT 1")
+    suspend fun getMostRecentlyUpdatedBookmark(): Bookmark?
 }

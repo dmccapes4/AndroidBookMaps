@@ -221,6 +221,77 @@ public class BookPageDao_Impl(
     }
   }
 
+  public override fun observeMaxPageNumber(): Flow<Int> {
+    val _sql: String = "SELECT COALESCE(MAX(pageNumber), 0) FROM book_pages"
+    return createFlow(__db, false, arrayOf("book_pages")) { _connection ->
+      val _stmt: SQLiteStatement = _connection.prepare(_sql)
+      try {
+        val _result: Int
+        if (_stmt.step()) {
+          val _tmp: Int
+          _tmp = _stmt.getLong(0).toInt()
+          _result = _tmp
+        } else {
+          _result = 0
+        }
+        _result
+      } finally {
+        _stmt.close()
+      }
+    }
+  }
+
+  public override suspend fun getMaxPageNumber(): Int {
+    val _sql: String = "SELECT COALESCE(MAX(pageNumber), 0) FROM book_pages"
+    return performSuspending(__db, true, false) { _connection ->
+      val _stmt: SQLiteStatement = _connection.prepare(_sql)
+      try {
+        val _result: Int
+        if (_stmt.step()) {
+          val _tmp: Int
+          _tmp = _stmt.getLong(0).toInt()
+          _result = _tmp
+        } else {
+          _result = 0
+        }
+        _result
+      } finally {
+        _stmt.close()
+      }
+    }
+  }
+
+  public override fun observeChapterStarts(): Flow<List<ChapterStart>> {
+    val _sql: String = """
+        |
+        |        SELECT chapterNumber, MIN(pageNumber) AS startPage
+        |        FROM book_pages
+        |        GROUP BY chapterNumber
+        |        ORDER BY chapterNumber ASC
+        |        
+        """.trimMargin()
+    return createFlow(__db, false, arrayOf("book_pages")) { _connection ->
+      val _stmt: SQLiteStatement = _connection.prepare(_sql)
+      try {
+        val _columnIndexOfChapterNumber: Int = 0
+        val _columnIndexOfStartPage: Int = 1
+        val _result: MutableList<ChapterStart> = mutableListOf()
+        while (_stmt.step()) {
+          val _item: ChapterStart
+          val _tmpChapterNumber: Int
+          _tmpChapterNumber = _stmt.getLong(_columnIndexOfChapterNumber).toInt()
+          val _tmpStartPage: Int
+          _tmpStartPage = _stmt.getLong(_columnIndexOfStartPage).toInt()
+          _item = ChapterStart(_tmpChapterNumber,_tmpStartPage)
+          _result.add(_item)
+        }
+        _result
+      } finally {
+        _stmt.close()
+      }
+    }
+  }
+
   private fun __fetchRelationshipbookmarksAscomExampleBookmapsDatabaseBookmark(_connection: SQLiteConnection, _map: LongSparseArray<MutableList<Bookmark>>) {
     if (_map.isEmpty()) {
       return

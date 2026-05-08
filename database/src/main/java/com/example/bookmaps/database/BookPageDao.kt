@@ -31,4 +31,20 @@ interface BookPageDao {
 
     @Query("SELECT COUNT(*) FROM book_pages")
     suspend fun countPages(): Int
+
+    @Query("SELECT COALESCE(MAX(pageNumber), 0) FROM book_pages")
+    fun observeMaxPageNumber(): Flow<Int>
+
+    @Query("SELECT COALESCE(MAX(pageNumber), 0) FROM book_pages")
+    suspend fun getMaxPageNumber(): Int
+
+    @Query(
+        """
+        SELECT chapterNumber, MIN(pageNumber) AS startPage
+        FROM book_pages
+        GROUP BY chapterNumber
+        ORDER BY chapterNumber ASC
+        """,
+    )
+    fun observeChapterStarts(): Flow<List<ChapterStart>>
 }

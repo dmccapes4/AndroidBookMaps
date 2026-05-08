@@ -183,6 +183,72 @@ public class BookmarkDao_Impl(
     }
   }
 
+  public override fun observeAllBookmarks(): Flow<List<Bookmark>> {
+    val _sql: String = "SELECT * FROM bookmarks ORDER BY last_updated DESC"
+    return createFlow(__db, false, arrayOf("bookmarks")) { _connection ->
+      val _stmt: SQLiteStatement = _connection.prepare(_sql)
+      try {
+        val _columnIndexOfId: Int = getColumnIndexOrThrow(_stmt, "id")
+        val _columnIndexOfPageNumber: Int = getColumnIndexOrThrow(_stmt, "pageNumber")
+        val _columnIndexOfTitle: Int = getColumnIndexOrThrow(_stmt, "title")
+        val _columnIndexOfNote: Int = getColumnIndexOrThrow(_stmt, "note")
+        val _columnIndexOfLastUpdatedMillis: Int = getColumnIndexOrThrow(_stmt, "last_updated")
+        val _result: MutableList<Bookmark> = mutableListOf()
+        while (_stmt.step()) {
+          val _item: Bookmark
+          val _tmpId: Long
+          _tmpId = _stmt.getLong(_columnIndexOfId)
+          val _tmpPageNumber: Int
+          _tmpPageNumber = _stmt.getLong(_columnIndexOfPageNumber).toInt()
+          val _tmpTitle: String
+          _tmpTitle = _stmt.getText(_columnIndexOfTitle)
+          val _tmpNote: String
+          _tmpNote = _stmt.getText(_columnIndexOfNote)
+          val _tmpLastUpdatedMillis: Long
+          _tmpLastUpdatedMillis = _stmt.getLong(_columnIndexOfLastUpdatedMillis)
+          _item = Bookmark(_tmpId,_tmpPageNumber,_tmpTitle,_tmpNote,_tmpLastUpdatedMillis)
+          _result.add(_item)
+        }
+        _result
+      } finally {
+        _stmt.close()
+      }
+    }
+  }
+
+  public override suspend fun getMostRecentlyUpdatedBookmark(): Bookmark? {
+    val _sql: String = "SELECT * FROM bookmarks ORDER BY last_updated DESC LIMIT 1"
+    return performSuspending(__db, true, false) { _connection ->
+      val _stmt: SQLiteStatement = _connection.prepare(_sql)
+      try {
+        val _columnIndexOfId: Int = getColumnIndexOrThrow(_stmt, "id")
+        val _columnIndexOfPageNumber: Int = getColumnIndexOrThrow(_stmt, "pageNumber")
+        val _columnIndexOfTitle: Int = getColumnIndexOrThrow(_stmt, "title")
+        val _columnIndexOfNote: Int = getColumnIndexOrThrow(_stmt, "note")
+        val _columnIndexOfLastUpdatedMillis: Int = getColumnIndexOrThrow(_stmt, "last_updated")
+        val _result: Bookmark?
+        if (_stmt.step()) {
+          val _tmpId: Long
+          _tmpId = _stmt.getLong(_columnIndexOfId)
+          val _tmpPageNumber: Int
+          _tmpPageNumber = _stmt.getLong(_columnIndexOfPageNumber).toInt()
+          val _tmpTitle: String
+          _tmpTitle = _stmt.getText(_columnIndexOfTitle)
+          val _tmpNote: String
+          _tmpNote = _stmt.getText(_columnIndexOfNote)
+          val _tmpLastUpdatedMillis: Long
+          _tmpLastUpdatedMillis = _stmt.getLong(_columnIndexOfLastUpdatedMillis)
+          _result = Bookmark(_tmpId,_tmpPageNumber,_tmpTitle,_tmpNote,_tmpLastUpdatedMillis)
+        } else {
+          _result = null
+        }
+        _result
+      } finally {
+        _stmt.close()
+      }
+    }
+  }
+
   public companion object {
     public fun getRequiredConverters(): List<KClass<*>> = emptyList()
   }

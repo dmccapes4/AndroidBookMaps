@@ -18,6 +18,14 @@ abstract class BookMapsDatabase : RoomDatabase() {
     companion object {
         private const val DB_NAME = "bookmaps.db"
 
+        @Volatile
+        private var instance: BookMapsDatabase? = null
+
+        fun getInstance(context: Context): BookMapsDatabase =
+            instance ?: synchronized(this) {
+                instance ?: create(context.applicationContext).also { instance = it }
+            }
+
         fun create(context: Context): BookMapsDatabase =
             Room.databaseBuilder(
                 context.applicationContext,
