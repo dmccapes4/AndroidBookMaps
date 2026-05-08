@@ -37,6 +37,18 @@ android {
     buildFeatures {
         compose = true
     }
+
+    testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel10") {
+                    device = "Pixel 10"
+                    apiLevel = 36
+                    systemImageSource = "google-atd"
+                }
+            }
+        }
+    }
 }
 
 dependencies {

@@ -1,0 +1,9 @@
+com.example.bookmaps.database-pngs-0 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\build\generated\res\pngs\debug
+com.example.bookmaps.database-updated_navigation_xml-1 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\build\generated\updated_navigation_xml\debug
+com.example.bookmaps.database-mergeDebugResources-2 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.example.bookmaps.database-mergeDebugResources-3 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.example.bookmaps.database-debug-4 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\build\intermediates\merged_res\debug\mergeDebugResources
+com.example.bookmaps.database-debug-5 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\build\intermediates\packaged_res\debug\packageDebugResources
+com.example.bookmaps.database-debug-6 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\src\debug\res
+com.example.bookmaps.database-main-7 C:\Users\dylan\AndroidStudioProjects\BookMaps\database\src\main\res
+gradleHome-0 C:\Users\dylan\.gradle
